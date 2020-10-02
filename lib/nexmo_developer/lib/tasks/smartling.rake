@@ -40,7 +40,17 @@ namespace :smartling do
     puts 'Done!'
   end
 
-  desc 'Find documents that need translations'
-  task translations_due: :env do
+  desc 'Send documents to Smartling by frequency'
+  task :translations_by_frequency, %i[frequency] =>  :env do
+    puts "Sending Files to Smartling with frequency #{frequency}"
+
+    # Which files should we include?
+    paths = []
+    Translator::TranslatorCoordinator.new(
+      paths: paths,
+      frequency: args[:frequency]
+    ).create_smartling_jobs!
+
+    puts 'Done!'
   end
 end
